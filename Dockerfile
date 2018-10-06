@@ -53,6 +53,8 @@ RUN sudo chown 1000:100 /tmp/opentsdb.conf; \
     sudo mv ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf.original; \
     sudo mv /tmp/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf
 
+EXPOSE 4242/tcp
+
 # Finally, start the TSD.
 #ENTRYPOINT [ "/tmp/run.sh" ]
 
