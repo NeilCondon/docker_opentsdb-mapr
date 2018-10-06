@@ -1,0 +1,583 @@
+############################################################################################################
+# CORE SETTINGS
+############################################################################################################
+
+# Whether or not the TSD will allow writing data points.
+#  - Must be either rw to allow writing data or ro to block data point writes.
+#  - Note that meta data such as UIDs can still be written/modified.
+# Optional, String, Default: rw
+tsd.mode = rw
+
+# Enable or disable the diediedie HTML and ASCII commands to shutdown a TSD.
+# Optional, Boolean, Default: false
+tsd.no_diediedie = false
+
+# Whether or not a data point with a new metric will assign a UID to the metric.
+#  - When false, a data point with a metric that is not in the database will be rejected and an exception will be thrown.
+# Optional, Boolean, Default: false
+tsd.core.auto_create_metrics = true
+
+# Whether or not a data point with a new tag name will assign a UID to the tag.
+#  - When false, a data point with a tag name that is not in the database will be rejected and an exception will be thrown.
+# Optional, Boolean, Default: true 
+tsd.core.auto_create_tagks = true
+tsd.core.auto_create_tagvs = true
+
+# Sets the maximum number of connections a TSD will handle, additional connections are immediately closed.
+# Optional, Integer, Default: 0
+# tsd.core.connections.limit = 0
+
+# Whether or not to allow the 2.x HTTP API to function.
+#  - When disabled, calls to endpoints such as /api/query or /api/suggest will return a 404.
+# Optional, Boolean, Default: true
+tsd.core.enable_api = true
+
+# Whether or not to allow the built-in GUI and legacy HTTP API to function.
+#  - When disabled, calls to the root endpoint or other such as /logs or /suggest will return a 404.
+# Optional, Boolean, Default: true
+tsd.core.enable_ui = false
+
+# A mapping of histogram codec class names to numeric identifications for storing multi-measurement data.
+# For simple configurations, the value may be a quote-escaped JSON map, 
+#   e.g. {\"net.opentsdb.core.SimpleHistogramDecoder\": 0,\"net.opentsdb.core.CompactQuantilesSketchCodec\":1}.
+# If the value ends with .json then it will be treated as a file path and the given file will be opened and parsed.
+# Numeric IDs must be between 0 and 255.
+# Optional, JSON/File Path
+#tsd.core.histograms.config = 
+
+# Whether or not the meta data caching plugin is enabled.
+# Optional, Boolean, Default: false
+tsd.core.meta.cache.enable = false
+
+# The class name of a plugin implementing the meta cache interface.
+# Optional, String
+# tsd.core.meta.cache.plugin = ""
+
+# Whether or not to enable real-time UIDMeta object creation.
+# Optional, Boolean, Default: false
+tsd.core.meta.enable_realtime_uid = true
+
+# Whether or not to enable real-time TSMeta object creation.
+# Optional, Boolean, Default: false
+tsd.core.meta.enable_realtime_ts = false
+
+# Whether or not to enable tracking of TSUIDs by storing a 1 with the current timestamp every time a data point is recorded.
+# Optional, Boolean, Default: false
+tsd.core.meta.enable_tsuid_tracking = false
+
+# Whether or not to enable tracking of TSUIDs by incrementing a counter every time a data point is recorded.
+#   (Overrides "tsd.core.meta.enable_tsuid_tracking")
+# Optional, Boolean, Default: false
+tsd.core.meta.enable_tsuid_incrementing = false
+
+# A path to search for plugins when the TSD starts.
+#  - If the path is invalid, the TSD will fail to start.
+#  - Plugins can still be enabled if they are in the class path.
+# Optional, String
+#tsd.core.plugin_path
+
+# Enables pre-population of the UID caches when starting a TSD.
+# Optional, Boolean, Default: false
+tsd.core.preload_uid_cache = false
+
+# The number of rows to scan for UID pre-loading.
+# Optional, Integer, Default: 300,000
+#tsd.core.preload_uid_cache.max_entries = 300000
+
+# Whether or not to export the listening network port of the TSD as a tag with stats when calling one of the stats endpoints.
+# Optional, Boolean, Default: false
+tsd.core.stats_with_port = false
+
+# Whether or not to enable the configured storage exception handler plugin.
+# Optional, Boolean, Default: false
+tsd.core.storage_exception_handler.enable = false
+
+# The full class name of the storage exception handler plugin you wish to use.
+# Optional, String
+#tsd.core.storage_exception_handler.plugin = 
+
+# An optional list of ASCII characters allowed in metric names, tag names and tag keys above those already allowed by TSDB. Spaces are allowed.
+# Optional, String
+#tsd.core.tag.allow_specialchars = 
+
+# A localized timezone identification string used to override the local system timezone used when converting absolute times to UTC when executing a query.
+#  - This does not affect incoming data timestamps. E.g. America/Los_Angeles
+# Optional, String
+#tsd.core.timezone = 
+
+# Whether or not to enable processing new/edited TSMeta through tree rule sets.
+# Optional, Boolean, Default: false
+tsd.core.tree.enable_processing = false
+
+# Whether or not to randomly assign UIDs to new metrics as they are created.
+# Optional, Boolean, Default: false
+tsd.core.uid.random_metrics = false
+
+# Whether or not to allow out-of-order values when bulk importing data from a text file.
+# Optional, Boolean, Default: false
+tsd.core.bulk.allow_out_of_order_timestamps = false
+
+# Whether or not to enable the specified Authentication plugin
+# Optional, Boolean, Default: false
+#tsd.core.authentication.enable = false
+
+# The class name of an authentication plugin to instantiate.
+#  - If tsd.core.authentication.enable is set to false, this value is ignored.
+# Optional, String
+#tsd.core.authentication.plugin = 
+
+
+######################################################################################################
+# HTTP SETTINGS
+######################################################################################################
+
+# The full path to a location where temporary files can be written. E.g. /tmp/opentsdb
+# Required, String
+tsd.http.cachedir = /opt/mapr/opentsdb/opentsdb-2.4.0/var/cache/opentsdb
+
+# Whether or not to allow deleting data points from storage during query time.
+# Optional, Boolean, Default: false
+tsd.http.query.allow_delete = false
+
+# An optional HTTP header that, when passed to the HTTP /api/put API, will be extracted and added to the tags of the values posted with the content.
+#  - Must match an HTTP header exactly.
+# Optional, String, Default: X-CustomTag
+#tsd.http.header_tag = 
+
+# A comma separated list of domain names to allow access to OpenTSDB when the Origin header is specified by the client.
+#  - If empty, CORS requests are passed through without validation.
+#  - The list may not contain the public wildcard * and specific domains at the same time.
+# Optional, String
+#tsd.http.request.cors_domains = 
+
+# A comma separated list of headers sent to clients when executing a CORs request.
+#  - The literal value of this option will be passed to clients.
+# Optional, String, Default: Authorization, Content-Type, Accept, Origin, User-Agent, DNT, Cache-Control,
+#                            X-Mx-ReqToken, Keep-Alive, X-Requested-With, If-Modified-Since
+#tsd.http.request.cors_headers =
+
+# Whether or not to enable incoming chunk support for the HTTP RPC
+# Optional, Boolean, Default: false
+tsd.http.request.enable_chunked = false
+
+# The maximum request body size to support for incoming HTTP requests when chunking is enabled.
+# Optional, Integer, Default: 4096
+tsd.http.request.max_chunk = 4096
+
+# A comma delimited list of RPC plugins to load when starting a TSD. Must contain the entire class name.
+# Optional, String
+# tsd.http.rpc.plugins = 
+
+# Whether or not to return the stack trace with an API query response when an exception occurs.
+# Optional, Boolean, Default: false
+tsd.http.show_stack_trace = false
+
+# Location of a directory where static files, such as JavaScript files for the web interface, are located.
+#  - E.g. /opt/opentsdb/staticroot
+# Required, String
+tsd.http.staticroot = /opt/mapr/opentsdb/opentsdb-2.4.0/share/opentsdb/static/
+
+
+#######################################################################################################
+# NETWORK SETTINGS
+#######################################################################################################
+
+# Whether or not to use NIO or traditional blocking IO
+# Optional, Boolean, Default: true
+tsd.network.async_io = true
+
+# The connection queue depth for completed or incomplete connection requests depending on OS.
+#  - The default may be limited by the 'somaxconn' kernel setting or set by Netty to 3072.
+# Optional, Integer
+#tsd.network.backlog = 
+
+# An IPv4 address to bind to for incoming requests. The default is to listen on all interfaces. E.g. 127.0.0.1
+# Optional, String, Default: 0.0.0.0
+tsd.network.bind = 0.0.0.0
+
+# Whether or not to allow keep-alive connections.
+# Optional, Boolean, Default: true
+tsd.network.keep_alive = true
+
+# The TCP port to use for accepting connections.
+# Required, Integer
+tsd.network.port = 4242
+
+# Whether or not to allow reuse of the bound port within Netty
+# Optional, Boolean, Default: true
+tsd.network.reuse_address = true
+
+# Whether or not to disable TCP buffering before sending data.
+# Optional, Boolean, Default: true
+tsd.network.tcp_no_delay = true
+
+# The number of asynchronous IO worker threads for Netty
+# Optional, Integer, Default: #cores * 2
+#tsd.network.worker_threads = 
+
+
+#################################################################################################
+# QUERY SETTINGS
+#################################################################################################
+
+# Whether or not to allow simultaneous duplicate queries from the same host.
+#  - If disabled, a second query that comes in matching one already running will receive an exception.
+# Optional, Boolean, Default: false
+tsd.query.allow_simultaneous_duplicates = false
+
+# Whether or not to enable the FuzzyRowFilter for HBase when making queries using the explicitTags flag.
+# Optional, Boolean, Default: true
+tsd.query.enable_fuzzy_filter = true
+
+# The maximum number of tag values to include in the regular expression sent to storage during scanning for data.
+#  - A larger value means more computation on the HBase region servers.
+# Optional, Integer, Default: 4096
+tsd.query.filter.expansion_limit = 4096
+
+# Whether or not the query byte limiter can be overiden on a per-query basis.
+# Optional, Boolean, Default: false
+tsd.query.limits.bytes.allow_override = false
+
+# A limit on the number of bytes fetched from storage.
+#  - When this limit is hit, the query will return with an exception.
+#  - A value of 0 disables the limitter.
+# Optional, Integer, Default: 0
+tsd.query.limits.bytes.default = 0
+
+# Whether or not the query data point limiter can be overiden on a per-query basis.
+# Optional, Boolean, Default: false
+tsd.query.limits.data_points.allow_override = false
+
+# A limit on the number of data points fetched from storage.
+#  - When this limit is hit, the query will return with an exception. 
+#  - A value of 0 disables the limiter.
+# Optional, Integer, Default: 0
+tsd.query.limits.data_points.default = 0
+
+# How often, in milliseconds, to reload the byte and data point query limiter plugin configuration.
+# Optional, Integer, Default: 60000
+tsd.query.limits.overrides.interval = 60000
+
+# The path or full config of a query limit configuration with options to match on metric names.
+# Optional, JSON/File Path
+# tsd.query.limits.overrides.config = 
+
+# Whether or not multi-get queries are enabled in conjunction with the search plugin.
+# Optional, Boolean, Default: false
+tsd.query.multi_get.enable = false
+
+# The number of get requests sent to storage in a single request.
+# Optional, Integer, Default: 1024
+tsd.query.multi_get.batch_size = 1024
+
+# The number of simultaneous batches outstanding at any given time for multi-get queries.
+# Optional, Integer, Default: 20
+tsd.query.multi_get.concurrent = 20
+
+# Whether or not a get request is fired for every bucket of salt or if the proper bucket is calculated.
+#  - Used when salting configurations have changed.
+# Optional, Boolean, Default: false
+tsd.query.multi_get.get_all_salts = false
+
+# Whether or not to continue querying when the query includes a tag value that hasn't been assigned a UID yet and may not exist.
+# Optional, Boolean, Default: false
+tsd.query.skip_unresolved_tagvs = false
+
+# How long, in milliseconds, before canceling a running query.
+#  - A value of 0 means queries will not timeout.
+# Optional, Integer, Default: 0
+tsd.query.timeout = 0
+
+
+###########################################################################################################
+# ROLLUP SETTINGS
+###########################################################################################################
+
+# The path to a configuration file detailing available rollup tables and aggregations.
+#  - Must set tsd.rollups.enable to true for this option to be parsed.
+# Optional, String
+#tsd.rollups.config =
+
+# Whether or not to enable rollup and pre-aggregation storage and writing.
+# Optional, Boolean, Default: false
+tsd.rollups.enable = false
+
+# Whether or not to tag non-rolled-up and non-pre-aggregated values with the tag key configured in tsd.rollups.agg_tag_key
+# and value configured in tsd.rollups.raw_agg_tag_value
+# Optional, Boolean, Default: false
+tsd.rollups.tag_raw = false
+
+# A special key to tag pre-aggregated data with when writing to storage
+# String, Optional
+#tsd.rollups.agg_tag_key =
+
+# A special tag value to non-rolled-up and non-pre-aggregated data with when writing to storage.
+#  - tsd.rollups.tag_raw must be set to true.
+# String, Optional, Default: RAW
+#tsd.rollups.raw_agg_tag_value = RAW
+
+# Whether or not to block storing derived aggregations such as AVG and DEV.
+# Optional, Boolean, Default: true
+tsd.rollups.block_derived = true
+
+
+###########################################################################################################
+# RPC SETTINGS
+###########################################################################################################
+
+# A comma delimited list of RPC plugins to load when starting a TSD.
+#  - Must contain the entire class name.
+# String, Optional
+#tsd.rpc.plugins =
+
+# Whether or not to return errors to the Telnet style socket when writing data via put or rollup
+# Optional, Boolean, Default: true
+tsd.rpc.telnet.return_errors = true
+
+
+###########################################################################################################
+# REAL-TIME PLUGIN SETTINGS
+###########################################################################################################
+
+# Whether or not to enable a real time publishing plugin.
+#  - If true, you must supply a valid tsd.rtpublisher.plugin class name
+# Optional, Boolean, Default: false
+tsd.rtpublisher.enable = false
+
+# The class name of a real time publishing plugin to instantiate.
+#  - If tsd.rtpublisher.enable is set to false, this value is ignored.
+#  - E.g. net.opentsdb.tsd.RabbitMQPublisher
+# Optional, String
+#tsd.rtpublisher.plugin =
+
+
+###########################################################################################################
+# REAL-TIME PLUGIN SETTINGS
+###########################################################################################################
+
+# Whether or not to enable search functionality.
+#  - If true, you must supply a valid tsd.search.plugin class name
+# Optional, Boolean, Default: false
+tsd.search.enable = false
+
+# The class name of a search plugin to instantiate.
+#  - If tsd.search.enable is set to false, this value is ignored.
+#  - E.g. net.opentsdb.search.ElasticSearch
+# Optional, String
+#tsd.search.plugin =
+
+
+###########################################################################################################
+# START-UP PLUGIN SETTINGS
+###########################################################################################################
+
+# Whether or not a startup plugin should be loaded before the TSD.
+# Optional, Boolean, Default: false
+tsd.startup.enable = false
+
+# The name of a plugin implementing the StartupPlugin interface.
+# Optional, String
+#tsd.startup.plugin = 
+
+
+###########################################################################################################
+# STORAGE SETTINGS
+###########################################################################################################
+
+# How long, in seconds, to wait in between compaction queue flush calls.
+# Optional, Integer, Default: 10
+tsd.storage.compaction.flush_interval = 10
+
+# A multiplier used to determine how quickly to attempt flushing the compaction queue.
+#  - E.g. a value of 2 means it will try to flush the entire queue within 30 minutes.
+#  - A value of 1 would take an hour.
+# Optional, Integer, Default: 2
+tsd.storage.compaction.flush_speed = 2
+
+# The maximum number of compaction calls inflight to HBase at any given time.
+# Optional, Integer, Default: 10000
+tsd.storage.compaction.max_concurrent_flushes = 10000
+
+# Size of the compaction queue that must be exceeded before flushing is triggered.
+# Optional, Integer, Default: 100
+tsd.storage.compaction.min_flush_threshold = 100
+
+# Whether or not to append data to columns when writing data points instead of creating new columns for each value.
+#  - Avoids the need for compactions after each hour but can use more resources on HBase.
+# Optional, Boolean, Default: false
+tsd.storage.enable_appends = false
+
+# Whether or not to enable compactions.
+# Optional, Boolean, Default: true
+tsd.storage.enable_compaction = true
+
+# Whether or not to accept the last written value when parsing data points with duplicate timestamps.
+#  - When enabled in conjunction with compactions, a compacted column will be written with the latest data points.
+# Optional, Boolean, Default: false
+tsd.storage.fix_duplicates = false
+
+# How often, in milliseconds, to flush the data point storage write buffer.
+# Optional, Integer, Default: 1000
+tsd.storage.flush_interval = 1000
+
+# A Unix Epoch timestamp in milliseconds when date tierd compactions were enabled on the HBase table.
+#  - This is useful for existing OpenTSDB installations moving to DTC.
+#  - Queries starting before this time period will not set time boundaries on queries.
+# Optional, Integer, Default: 0
+tsd.storage.get_date_tiered_compaction_start = 0
+
+# Name of the HBase table where data points are stored.
+#  -  for MapR-DB, this must be a full-path name to the table.
+# Optional, String, Default: tsdb
+tsd.storage.hbase.data_table = /tsdb
+
+# Name of the HBase table where meta data are stored.
+#  -  for MapR-DB, this must be a full-path name to the table.
+# Optional, String, Default: tsdb-meta
+tsd.storage.hbase.meta_table = /tsdb-meta
+
+# Whether or not to prefetch the regions for the TSDB tables before starting the network interface.
+#  - This can improve performance.
+# Optional, Boolean, Default: false
+tsd.storage.hbase.prefetch_meta = false
+
+# The maximum number of rows to fetch from HBase per call to the scanner's nextRows() method.
+# Optional, Integer, Default: 128
+tsd.storage.hbase.scanner.maxNumRows = 128
+
+# Name of the HBase table where tree data are stored.
+#  -  for MapR-DB, this must be a full-path name to the table.
+# Optional, String, Default: tsdb-tree
+tsd.storage.hbase.tree_table = /tsdb-tree
+
+# Name of the HBase table where UID information is stored.
+#  -  for MapR-DB, this must be a full-path name to the table.
+# Optional, String, Default: tsdb-uid
+tsd.storage.hbase.uid_table = /tsdb-uid
+
+# Path under which the znode for the -ROOT- region is located.
+# Optional, String, Default: /hbase
+tsd.storage.hbase.zk_basedir = /hbase
+
+# A comma-separated list of ZooKeeper hosts to connect to, with or without port specifiers.
+#  - E.g. 192.168.1.1:2181,192.168.1.2:2181
+# Optional, String, Default: localhost
+tsd.storage.hbase.zk_quorum = localhost
+
+# Whether or not to re-write appended data point columns at query time when the columns contain duplicate or out of order data.
+# Optional, Boolean, Default: false
+tsd.storage.repair_appends = false
+
+# The maximum number of tags allowed per data point.
+  - NOTE: Please be aware of the performance tradeoffs of overusing tags writing
+# Optional, Integer, Default: 8
+tsd.storage.max_tags = 8
+
+# The number of salt buckets used to distribute load across regions.
+#  - NOTE: Changing this value after writing data may cause TSUID based queries to fail.
+# Optional, Integer, Default: 20
+tsd.storage.salt.buckets = 20
+
+# The width, in bytes, of the salt prefix used to indicate which bucket a time series belongs in.
+#  - A value of 0 means salting is disabled.
+#  - WARNING: Do not change after writing data to HBase or you will corrupt your tables and not be able to query any more.
+# Optional, Integer, Default: 0
+tsd.storage.salt.width = 0
+
+# Whether or not the data writing filter plugins are enabled. 	
+# Optional, Boolean, Default: false
+tsd.timeseriesfilter.enable = false
+
+# The class path to a plugin that implements the WriteableDataPointFilterPlugin interface for filtering time series on writes.
+# Optional, String
+# tsd.timeseriesfilter.plugin = 
+
+# The width, in bytes, of metric UIDs.
+#  - WARNING: Do not change after writing data to HBase or you will corrupt your tables and not be able to query any more.
+# Optional, Integer, Default: 3
+tsd.storage.uid.width.metric = 3
+
+# The width, in bytes, of tag name UIDs.
+#  - WARNING Do not change after writing data to HBase or you will corrupt your tables and not be able to query any more.
+# Optional, Integer, Default: 3
+tsd.storage.uid.width.tagk = 3
+
+# The width, in bytes, of tag value UIDs.
+#  - WARNING Do not change after writing data to HBase or you will corrupt your tables and not be able to query any more.
+# Optional, Integer, Default: 3
+tsd.storage.uid.width.tagv = 3
+
+# Whether or not to choose the larger numeric value during TSDB compaction when duplicates are found and tsd.storage.use_otsdb_timestamp has been set to true.
+# Optional, Boolean, Default: true
+tsd.storage.use_max_value = true
+
+# Uses the data point's timestamp for the edits in storage instead of the default now. See Date Tierd Compaction
+# Optional, Boolean, Default: false
+tsd.storage.use_otsdb_timestamp = false
+
+
+#################################################################################################################
+# UID SETTINGS
+#################################################################################################################
+
+# Whether or not the UID assignment plugin filter is enabled.
+# Optional, Boolean, Default: false
+tsd.uidfilter.enable = false
+
+# A plugin implementing the UniqueIdFilterPlugin interface.
+# Optional, String
+#tsd.uidfilter.plugin = 
+
+# Changes the UID caches from unbounded maps to LRU caches.
+# Optional, Boolean, Default: false
+tsd.uid.lru.enable = false
+
+# The total number of entries in the reverse UID to string map.
+#  - Multiply this by 3 to get the total number of entries available, one per UID type (metric, tag key, tag value).
+# Optional, Integer, Default: 5000000
+tsd.uid.lru.id.size = 5000000
+
+# The total number of entries in the forward string to UID map.
+#  - Multiply this by 3 to get the total number of entries available, one per UID type (metric, tag key, tag value).
+# Optional, Integer, Default: 5000000
+tsd.uid.lru.name.size = 5000000
+
+# Determines if the name and/or ID caches should be populated based on the tsd.mode setting.
+# Optional, Boolean, Default: false
+tsd.uid.use_mode = false
+
+
+#################################################################################################################
+# MAPR SPECIFIC SETTINGS
+#################################################################################################################
+
+# Enable reading from streams
+# Required, Boolean
+tsd.default.usestreams = false
+
+# The name of the consumer group to join.
+#  - Multiple TSDs joined to the same group will each consume a subset of the message, for load balancing.
+#  - Only relevant if 'tsd.default.usestreams' is set to true.
+# Required, String
+#tsd.default.consumergroup = metrics
+
+# Path to the volume containing the streams to consume from.
+#  - Sreams in this location must be numbered 0...n-1, where n is set in 'tsd.streams.count', below.
+#  - Only relevant if 'tsd.default.usestreams' is set to true.
+# Required, String
+#tsd.streams.path = /var/mapr/mapr.monitoring/streams
+
+# Number of streams to consume from.
+#  - Only relevant if 'tsd.default.usestreams' is set to true.
+# Required, Integer
+#tsd.streams.count = 2
+
+# Size, in bytes, of the memory heap to allocate for the stream consumer.
+#  - Only relevant if 'tsd.default.usestreams' is set to true.
+# Required, Integer
+#tsd.streams.consumer.memory = 4194304
+
+# Delay, in milliseconds, between the consumer committing items read from Streams to the Telnet API
+#  - Only relevant if 'tsd.default.usestreams' is set to true.
+# Required, Integer
+tsd.streams.autocommit.interval = 60000
