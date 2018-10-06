@@ -45,10 +45,10 @@ RUN OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversio
 
 # Copy the run.sh script, which will modify opentsdb.conf at container run-time, into the /tmp folder
 ADD ./run.sh /tmp/run.sh
-RUN sudo chown 5000:100 /tmp/run.sh; \
+RUN sudo chown 1000:100 /tmp/run.sh; \
     sudo chmod a+rx /tmp/run.sh
 ADD ./opentsdb.conf.new /tmp/opentsdb.conf
-RUN sudo chown 5000:100 /tmp/opentsdb.conf; \
+RUN sudo chown 1000:100 /tmp/opentsdb.conf; \
     OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)"; \
     sudo mv ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf.original; \
     sudo mv /tmp/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf
