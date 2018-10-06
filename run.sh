@@ -14,6 +14,7 @@ JVMARGS="-enableassertions -enablesystemassertions -Xms$JVM_START_MEM -Xmx$JVM_M
 
 #####################################################################################
 # Function that generlaises replacement of a configuration entry in the file
+#  - we will use 'sed' and replace an entire matching line with the setting we want.
 #####################################################################################
 function replace_or_add_configOption () {
     local config=$1
@@ -57,8 +58,6 @@ sudo chown -R "$MAPR_CONTAINER_USER":"$MAPR_CONTAINER_GROUP" $OTSDB_HOME
 #####################################################################################
 # Modify the opentsdb.conf file using the parameters specified at container launch.
 #####################################################################################
-#  - we will use 'sed' and replace an entire matching line with the setting we want.
-
 ###################################
 # The 'tsd.core' settings:
 replace_or_add_configOption "tsd.core.auto_create_metrics" "true" $OTSDB_CONF_FILE "tsd.core."
@@ -73,7 +72,6 @@ relpace_or_add_configOption "tsd.storage.hbase.zk_quorum" "eddisc0:5181" $OTSDB_
 # The REQUIRED tsd.http settings:
 replace_or_add_configOption "tsd.http.staticroot" $OTSDB_HOME/share/opentsdb/static/ $OTSDB_CONF_FILE "tsd.http."
 replace_or_add_configOption "tsd.http.cachedir" $OTSDB_HOME/var/cache/opentsdb $OTSDB_CONF_FILE "tsd.http."
-
 
 ###################################
 # The table locations
