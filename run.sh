@@ -1,4 +1,4 @@
-#/bin/bash
+#!/bin/bash
 #
 # Copyright (c) 2018 & onwards.  Edwards Limited, All rights reserverd.
 #
