@@ -3,14 +3,22 @@
 # Copyright (c) 2018 & onwards.  Edwards Limited, All rights reserverd.
 #
 # This script configures the container's OpenTSDB instance by adjusting a config
-# file based on environment variable settings.
+# file based on runtime environment variable settings.
 #
 
+# Some preliminary variables.   Some will have been set in the Dockerfile.
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 OTSDB_HOME="${OTSDB_HOME:-/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)}"
 OTSDB_CONF_FILE="${OTSDB_HOME}/etc/opentsdb/opentsdb.conf"
 MAPR_ZK_HOSTS="${MAPR_ZK_HOSTS:-$(maprcli node listzookeepers)}"
 JVMARGS="-enableassertions -enablesystemassertions -Xms$JVM_START_MEM -Xmx$JVM_MAX_MEM"
+
+# the MAPR_CONTAINER_USER and MAPR_CLUSTER are only known at runtime, so the table paths cannot be set until runtime
+TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user/${MAPR_CONTAINER_USER}/opentsdb-default \
+OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb \
+OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta \
+OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid \
+OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE=${TSDB_TABLES_ROOT}/tsdb-tree \
 
 
 #####################################################################################
