@@ -2,17 +2,13 @@
 FROM neilcedwards/opentsdb-mapr:pacc_6.0.1_5.0.0_yarn_fuse_hbase_streams
 
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
-ENV ENABLE_TSD_UI=false \
-    OPENTSDB_CONSUME_DIRECT=false \
-    STREAM_PATH=/mapr/user/${MAPR_CONTAINER_USER}/opentsdb \
-    STREAMS_CONUSMER_GROUP=${MAPR_CONTIANER_USER}.default \
-    STREAMS_CONSUMER_MEMORY=1048576 \
-    STREAMS_COUNT=1 \
-    TABLES_ROOT_PATH=/mapr/user/${MAPR_CONTAINER_USER}/opentsdb-default \
-    TSDB_TABLE_PATH=${TABLES_ROOT_PATH}/tsdb \
-    META_TABLE_PATH=${TABLES_ROOT_PATH}/tsdb-meta \ 
-    UID_TABLE_PATH=${TABLES_ROOT_PATH}/tsdb-uid \
-    TREE_TABLE_PATH=${TABLES_ROOT_PATH}/tsdb-tree \
+ENV OT_TSD_o_CORE_o_ENABLE_o_UI=false \
+    OT_TSD_o_DEFAULT_o_USESTREAMS=false \
+    TSDB_TABLES_ROOT=/mapr/user/${MAPR_CONTAINER_USER}/opentsdb-default \
+    OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb \
+    OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta \ 
+    OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid \
+    OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE=${TSDB_TABLES_ROOT}/tsdb-tree \
     JVM_START_MEM=100k \
     JVM_MAX_MEM=1g \
     MAPR_HOME=/opt/mapr
