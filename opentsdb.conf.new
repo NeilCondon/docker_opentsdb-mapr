@@ -35,7 +35,7 @@ tsd.core.enable_api = true
 # Whether or not to allow the built-in GUI and legacy HTTP API to function.
 #  - When disabled, calls to the root endpoint or other such as /logs or /suggest will return a 404.
 # Optional, Boolean, Default: true
-tsd.core.enable_ui = false
+tsd.core.enable_ui = true
 
 # A mapping of histogram codec class names to numeric identifications for storing multi-measurement data.
 # For simple configurations, the value may be a quote-escaped JSON map, 
@@ -107,7 +107,7 @@ tsd.core.storage_exception_handler.enable = false
 
 # Whether or not to enable processing new/edited TSMeta through tree rule sets.
 # Optional, Boolean, Default: false
-tsd.core.tree.enable_processing = false
+tsd.core.tree.enable_processing = true
 
 # Whether or not to randomly assign UIDs to new metrics as they are created.
 # Optional, Boolean, Default: false
