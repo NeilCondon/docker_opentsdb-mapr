@@ -9,6 +9,7 @@
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 OTSDB_HOME="${OTSDB_HOME:-/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)}"
 OTSDB_CONF_FILE="${OTSDB_HOME}/etc/opentsdb/opentsdb.conf"
+MAPR_ZK_HOSTS="${MAPR_ZK_HOSTS:-$(maprcli node listzookeepers)}"
 JVMARGS="-enableassertions -enablesystemassertions -Xms$JVM_START_MEM -Xmx$JVM_MAX_MEM"
 
 
@@ -60,50 +61,21 @@ sudo chown -R "$MAPR_CONTAINER_USER":"$MAPR_CONTAINER_GROUP" $OTSDB_HOME
 #####################################################################################
 ###################################
 # The 'tsd.core' settings:
-replace_or_add_configOption "tsd.core.auto_create_metrics" "true" $OTSDB_CONF_FILE "tsd.core."
-replace_or_add_configOption "tsd.core.meta.enable_realtime_uid" "true" $OTSDB_CONF_FILE "tsd.core."
-replace_or_add_configOption "tsd.core.meta.enable_realtime_ts" "false" $OTSDB_CONF_FILE "tsd.core."
-replace_or_add_configOption "tsd.core.meta.enable_tsuid_tracking" "false" $OTSDB_CONF_FILE "tsd.core."
-replace_or_add_configOption "tsd.core.tree.enable_processing" "true" $OTSDB_CONF_FILE "tsd.core."
-replace_or_add_configOption "tsd.core.enable_ui" "true" $OTSDB_CONF_FILE "tsd.core."
-relpace_or_add_configOption "tsd.storage.hbase.zk_quorum" "eddisc0:5181" $OTSDB_CONF_FILE "tsd.storage."
+relpace_or_add_configOption "tsd.storage.hbase.zk_quorum" $MAPR_ZK_HOSTS $OTSDB_CONF_FILE "tsd.storage."
 
 ###################################
 # The REQUIRED tsd.http settings:
 replace_or_add_configOption "tsd.http.staticroot" $OTSDB_HOME/share/opentsdb/static/ $OTSDB_CONF_FILE "tsd.http."
 replace_or_add_configOption "tsd.http.cachedir" $OTSDB_HOME/var/cache/opentsdb $OTSDB_CONF_FILE "tsd.http."
 
-###################################
-# The table locations
-replace_or_add_configOption "tsd.storage.hbase.data_table" $TSDB_TABLE_PATH $OTSDB_CONF_FILE "tsd.storage."
-replace_or_add_configOption "tsd.storage.hbase.uid_table" $UID_TABLE_PATH $OTSDB_CONF_FILE "tsd.storage."
-replace_or_add_configOption "tsd.storage.hbase.meta_table" $META_TABLE_PATH $OTSDB_CONF_FILE "tsd.storage."
-replace_or_add_configOption "tsd.storage.hbase.tree_table" $TREE_TABLE_PATH $OTSDB_CONF_FILE "tsd.storage.hbase."
-
-###################################
-# The MapR-ES (streams) parameters
-replace_or_add_configOption "tsd.default.usestreams" $OTSDB_CONSUME_DIRECT $OTSDB_CONF_FILE "tsd.default."
-# set stream options if usestrems is true, with TSD as read-only; else TSD is read-write
-if [$OTSDB_CONSUME_DIRECT = true]; then
-    replace_or_add_configOption "tsd.default.consumergroup" $STREAMS_CONSUMER_GROUP $OTSDB_CONF_FILE "tsd.default."
-    replace_or_add_configOption "tsd.streams.path" $STREAM_PATH $OTSDB_CONF_FILE "tsd.default."
-    replace_or_add_configOption "tsd.streams.consumer.memory" $STREAMS_CONSUMER_MEMORY $OTSDB_CONF_FILE "tsd.default."
-    replace_or_add_configOption "tsd.streams.count" $STREAMS_COUNT $OTSDB_CONF_FILE "tsd.default."
-    replace_or_add_configOption "tsd.streams.autocommit.interval" $STREAMS_AUTOCOMMING_INTERVAL $OTSDB_CONF_FILE "tsd.default."
-    replace_or_add_configOption "tsd.mode" "ro" $OTSDB_CONF_FILE "tsd.default."
-else
-    replace_or_add_configOption "tsd.mode" "rw" $OTSDB_CONF_FILE "tsd.default."
-fi
-
-
 ##################################
 # Additional arbitrary environment variables.
 #  - Thesea are prefixed 'OT_'
-#  - '_dot_' in variable names will be replaced with '.'
+#  - '_o_' in variable names will be replaced with '.'
 #  - varaibles can be specified to overwrite anything in the conf file
 #
 for VAR in $(env | grep 'OT_' | sed -r "s/([^=]*).*/\1/g"); do
-    CONFIG_NAME=$(echo ${VAR:3} | tr '_dot_' '.' | tr '[:upper:]' '[:lower:]')
+    CONFIG_NAME=$(echo ${VAR:3} | tr '_o_' '.' | tr '[:upper:]' '[:lower:]')
     CONFIG_VALUE=$(eval echo \$$VAR)
     replace_or_add_configOption $CONFIG_NAME $CONFIG_VALUE $OTSDB_CONF_FILE "tsd.default."
 done
