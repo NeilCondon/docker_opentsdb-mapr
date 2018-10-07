@@ -4,7 +4,7 @@ FROM neilcedwards/opentsdb-mapr:pacc_6.0.1_5.0.0_yarn_fuse_hbase_streams
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
 ENV OT_TSD_o_CORE_o_ENABLE_o_UI=false \
     OT_TSD_o_DEFAULT_o_USESTREAMS=false \
-    TSDB_TABLES_ROOT=/mapr/user/${MAPR_CONTAINER_USER}/opentsdb-default \
+    TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user//${MAPR_CONTAINER_USER}/opentsdb-default \
     OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb \
     OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta \ 
     OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid \
