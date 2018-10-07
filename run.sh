@@ -18,7 +18,7 @@ TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user/${MAPR_CONTAINER_USER}/opentsdb-defa
 OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb \
 OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta \
 OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid \
-OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE=${TSDB_TABLES_ROOT}/tsdb-tree \
+OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE=${TSDB_TABLES_ROOT}/tsdb-tree
 
 
 #####################################################################################
@@ -69,11 +69,11 @@ sudo chown -R "$MAPR_CONTAINER_USER":"$MAPR_CONTAINER_GROUP" $OTSDB_HOME
 #####################################################################################
 ###################################
 # The 'tsd.core' settings:
-relpace_or_add_configOption "tsd.storage.hbase.zk_quorum" $MAPR_ZK_HOSTS $OTSDB_CONF_FILE "tsd.storage."
+replace_or_add_configOption "tsd.storage.hbase.zk_quorum" $MAPR_ZK_HOSTS $OTSDB_CONF_FILE "tsd.storage."
 
 ###################################
 # The REQUIRED tsd.http settings:
-replace_or_add_configOption "tsd.http.staticroot" $OTSDB_HOME/share/opentsdb/static/ $OTSDB_CONF_FILE "tsd.http."
+replace_or_add_configOption "tsd.http.staticroot" $OTSDB_HOME/share/opentsdb/static $OTSDB_CONF_FILE "tsd.http."
 replace_or_add_configOption "tsd.http.cachedir" $OTSDB_HOME/var/cache/opentsdb $OTSDB_CONF_FILE "tsd.http."
 
 ##################################
@@ -83,7 +83,7 @@ replace_or_add_configOption "tsd.http.cachedir" $OTSDB_HOME/var/cache/opentsdb $
 #  - varaibles can be specified to overwrite anything in the conf file
 #
 for VAR in $(env | grep 'OT_' | sed -r "s/([^=]*).*/\1/g"); do
-    CONFIG_NAME=$(echo ${VAR:3} | tr '_o_' '.' | tr '[:upper:]' '[:lower:]')
+    CONFIG_NAME=$(echo ${VAR:3} | sed 's/_o_/./g' | tr '[:upper:]' '[:lower:]')
     CONFIG_VALUE=$(eval echo \$$VAR)
     replace_or_add_configOption $CONFIG_NAME $CONFIG_VALUE $OTSDB_CONF_FILE "tsd.default."
 done
