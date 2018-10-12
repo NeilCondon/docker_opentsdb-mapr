@@ -1,6 +1,6 @@
 #|/bin/bash
 
-otsdb_port=4242
+otsdb_port=14242
 MAPR_HOME=${MAPR_HOME:-/opt/mapr}
 
 read -p 'Container user: ' user
@@ -28,7 +28,7 @@ else
     echo ''
 fi
 
-docker_args="-p 4242:$otsdb_port \
+docker_args="-p $otsdb_port:4242 \
              -e MAPR_CLUSTER=$cluster \
                -e MAPR_CLDB_HOSTS=$cldbs \
                -e MAPR_ZK_HOSTS=$zkeepers \
