@@ -56,7 +56,7 @@ if [ -f $MAPR_HOME/bin/maprlogin ]; then
         -duration 365:0:0 \
         -renewal 730:0:0
     sudo chown $user:$user $ticket_path
-    docker_args=$docker_args '-e MAPR_TICKETFILE_LOCATION=/tmp/maprticket -v' $ticket_path':/tmp/maprticket:ro'
+    docker_args="$docker_args -e MAPR_TICKETFILE_LOCATION=/tmp/maprticket -v $ticket_path:/tmp/maprticket:ro"
 else
     echo "The 'maprlogin' command is not availabe on this host; a MapR ticket could not be created."
     echo 'Defaulting to non-secure mode.'
