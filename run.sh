@@ -13,11 +13,12 @@ export OTSDB_CONF_FILE="${OTSDB_HOME}/etc/opentsdb/opentsdb.conf"
 export MAPR_ZK_HOSTS="${MAPR_ZK_HOSTS:-$(maprcli node listzookeepers)}"
 export JVMARGS="-enableassertions -enablesystemassertions -Xms$JVM_START_MEM -Xmx$JVM_MAX_MEM"
 
-# the MAPR_CONTAINER_USER and MAPR_CLUSTER are only known at runtime, so the table paths cannot be set until runtime
-export TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user/${MAPR_CONTAINER_USER}/opentsdb-default \
-export OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb \
-export OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta \
-export OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid \
+# The MAPR_CONTAINER_USER and MAPR_CLUSTER are only known at runtime, so now we
+# have to setup the default table paths, which use these values.
+export TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user/${MAPR_CONTAINER_USER}/opentsdb-default
+export OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb
+export OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta
+export OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid
 export OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE=${TSDB_TABLES_ROOT}/tsdb-tree
 
 
@@ -68,6 +69,7 @@ sudo chown -R "$MAPR_CONTAINER_USER":"$MAPR_CONTAINER_GROUP" $OTSDB_HOME
 #####################################################################################
 # Modify the opentsdb.conf file using the parameters specified at container launch.
 #####################################################################################
+
 ###################################
 # The 'tsd.core' settings:
 replace_or_add_configOption "tsd.storage.hbase.zk_quorum" $MAPR_ZK_HOSTS $OTSDB_CONF_FILE "tsd.storage."
