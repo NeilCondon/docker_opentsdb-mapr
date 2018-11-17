@@ -15,7 +15,7 @@ export JVMARGS="-enableassertions -enablesystemassertions -Xms$JVM_START_MEM -Xm
 
 # The MAPR_CONTAINER_USER and MAPR_CLUSTER are only known at runtime, so now we
 # have to setup the default table paths, which use these values.
-export TSDB_TABLES_ROOT=/mapr/${MAPR_CLUSTER}/user/${MAPR_CONTAINER_USER}/opentsdb-default
+export TSDB_TABLES_ROOT=/user/${MAPR_CONTAINER_USER}/opentsdb-default
 export OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE=${TSDB_TABLES_ROOT}/tsdb
 export OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE=${TSDB_TABLES_ROOT}/tsdb-meta
 export OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE=${TSDB_TABLES_ROOT}/tsdb-uid
