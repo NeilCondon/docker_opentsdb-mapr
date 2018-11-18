@@ -44,10 +44,10 @@ function replace_or_add_configOption () {
 #####################################################################################
 # Create Hbase tables using the table paths specified at container launch
 #####################################################################################
-echo "create '$UID_TABLE_PATH', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$TSDB_TABLE_PATH', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$TREE_TABLE_PATH', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$META_TABLE_PATH', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 
 
 #####################################################################################
