@@ -14,6 +14,7 @@ ENV MAPR_HOME=/opt/mapr \
 RUN yum -y update && \
     yum -y install mapr-opentsdb && \
     yum -y install python-pip python-devel gcc && \
+    yum clean all && \
     pip install --upgrade pip && \
     pip install --global-option=build_ext --global-option="--library-dirs=/opt/mapr/lib" --global-option="--include-dirs=/opt/mapr/include/" mapr-streams-python
 
