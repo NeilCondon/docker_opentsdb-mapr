@@ -44,20 +44,10 @@ function replace_or_add_configOption () {
 #####################################################################################
 # Create Hbase tables using the table paths specified at container launch
 #####################################################################################
-exec "hbase" shell <<EOF
-create '$UID_TABLE_PATH',
-  {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'},
-  {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}
-
-create '$TSDB_TABLE_PATH',
-  {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}
-
-create '$TREE_TABLE_PATH',
-  {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}
-
-create '$META_TABLE_PATH',
-  {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}
-EOF
+echo "create '$UID_TABLE_PATH', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$TSDB_TABLE_PATH', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$TREE_TABLE_PATH', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+echo "create '$META_TABLE_PATH', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 
 
 #####################################################################################
