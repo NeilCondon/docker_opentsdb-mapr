@@ -3,6 +3,7 @@ FROM neilcedwards/opentsdb-mapr:pacc_6.0.1_5.0.0_yarn_fuse_hbase_streams
 
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
 ENV MAPR_HOME=/opt/mapr \
+    LD_LIBRARY_PATH=${LD_LIBRARY_PATH:=$MAPR_HOME/lib} \
     JVM_START_MEM=256m \
     JVM_MAX_MEM=1g \
     MAPR_HOME=/opt/mapr \
@@ -11,7 +12,10 @@ ENV MAPR_HOME=/opt/mapr \
 
 # Install the latest  OpenTSDB from the MapR repo
 RUN yum -y update && \
-    yum -y install mapr-opentsdb
+    yum -y install mapr-opentsdb \
+    yum -y install python-pip python-devel gcc \
+    pip install --upgrade pip \
+    pip install --global-option=build_ext --global-option="--library-dirs=/opt/mapr/lib" --global-option="--include-dirs=/opt/mapr/include/" mapr-streams-python
 
 # Copy asynchbase jar
 RUN OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)"; \
