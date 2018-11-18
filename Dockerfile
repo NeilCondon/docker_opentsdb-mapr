@@ -12,9 +12,9 @@ ENV MAPR_HOME=/opt/mapr \
 
 # Install the latest  OpenTSDB from the MapR repo
 RUN yum -y update && \
-    yum -y install mapr-opentsdb \
-    yum -y install python-pip python-devel gcc \
-    pip install --upgrade pip \
+    yum -y install mapr-opentsdb && \
+    yum -y install python-pip python-devel gcc && \
+    pip install --upgrade pip && \
     pip install --global-option=build_ext --global-option="--library-dirs=/opt/mapr/lib" --global-option="--include-dirs=/opt/mapr/include/" mapr-streams-python
 
 # Copy asynchbase jar
