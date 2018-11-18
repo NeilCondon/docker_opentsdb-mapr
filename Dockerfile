@@ -3,7 +3,7 @@ FROM neilcedwards/opentsdb-mapr:pacc_6.0.1_5.0.0_yarn_fuse_hbase_streams
 
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
 ENV MAPR_HOME=/opt/mapr \
-    JVM_START_MEM=100k \
+    JVM_START_MEM=225m \
     JVM_MAX_MEM=1g \
     MAPR_HOME=/opt/mapr \
     OT_TSD_o_CORE_o_ENABLE_o_UI=false \
