@@ -42,12 +42,31 @@ function replace_or_add_configOption () {
 
 
 #####################################################################################
-# Create Hbase tables using the table paths specified at container launch
+# Create (missing) Hbase tables using the table paths specified at container launch
 #####################################################################################
-echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
-echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
+    echo "$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE already exists - skipping creation."
+else
+    echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+fi
+
+if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
+    echo "$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE already exists - skipping creation."
+else
+    echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+fi
+
+if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
+    echo "$$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE already exists - skipping creation."
+else
+    echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+fi
+
+if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
+    echo "$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE already exists - skipping creation."
+else
+    echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
+fi
 
 
 #####################################################################################
