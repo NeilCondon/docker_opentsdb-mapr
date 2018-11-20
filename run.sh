@@ -47,24 +47,28 @@ function replace_or_add_configOption () {
 if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
     echo "$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE already exists - skipping creation."
 else
+    echo "Creating table:  $OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE"
     echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_UID_TABLE', {NAME => 'id', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}, {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 fi
 
 if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
     echo "$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE already exists - skipping creation."
 else
+    echo "Creating table:  $OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE"
     echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_DATA_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 fi
 
 if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
-    echo "$$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE already exists - skipping creation."
+    echo "$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE already exists - skipping creation."
 else
+    echo "Creating table:  $OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE"
     echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_TREE_TABLE', {NAME => 't', VERSIONS => 1, COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 fi
 
 if echo -e "exists '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE'" | hbase shell 2>&1 | grep -q "does exist" 2>/dev/null; then
     echo "$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE already exists - skipping creation."
 else
+    echo "Creating table:  $OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE"
     echo "create '$OT_TSD_o_STORAGE_o_HBASE_o_META_TABLE', {NAME => 'name', COMPRESSION => 'LZO', BLOOMFILTER => 'ROW'}" | hbase shell
 fi
 
