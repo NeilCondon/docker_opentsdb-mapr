@@ -1,6 +1,9 @@
 # Use the custom MapR PACC from neilcedwards - it needs to be custom because we need Hbase client included.
 FROM neilcedwards/opentsdb-mapr:pacc_6.0.1_5.0.0_yarn_fuse_hbase_streams
 
+ARG http_proxy=http://interneta:8080
+ARG https_proxy=https://interneta:8080
+
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
 ENV MAPR_HOME=/opt/mapr \
     LD_LIBRARY_PATH=$MAPR_HOME/lib \
