@@ -15,7 +15,7 @@ ENV MAPR_HOME=/opt/mapr \
 
 # Install the latest  OpenTSDB from the MapR repo
 RUN yum -y update && \
-    yum -y install mapr-opentsdb && \
+    yum -y install gnuplot mapr-opentsdb && \
     yum -y install python-pip python-devel gcc && \
     yum clean all && \
     pip install --upgrade pip && \
