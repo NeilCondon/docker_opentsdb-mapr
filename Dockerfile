@@ -56,5 +56,5 @@ RUN sudo chown 1000:100 /tmp/opentsdb.conf; \
 EXPOSE 4242/tcp
 
 # Finally, start the TSD.
-ENTRYPOINT [ "/tmp/run.sh" ]
+CMD [ "/tmp/run.sh" ]
 
