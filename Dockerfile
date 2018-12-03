@@ -52,6 +52,9 @@ RUN sudo chown 1000:100 /tmp/opentsdb.conf; \
     OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)"; \
     sudo mv ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf.original; \
     sudo mv /tmp/opentsdb.conf ${OTSDB_HOME}/etc/opentsdb/opentsdb.conf
+ADD ./tcollector_opentsdb.sh /tmp/tcollector_opentsdb.sh
+RUN sudo chown 1000:100 /tmp/tcollector_opentsdb.sh; \
+    sudo chmod a+rx /tmp/tcollector_opentsdb.sh
 
 EXPOSE 4242/tcp
 

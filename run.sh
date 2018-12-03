@@ -106,8 +106,9 @@ done
 
 
 #####################################################################################
-# Start the TSD
+# Start the TSD, and its self-monitoring script.
 #####################################################################################
 echo ""
 echo "Starting TSD..."
-$OTSDB_HOME/bin/tsdb tsd
+$OTSDB_HOME/bin/tsdb tsd &
+/tmp/tcollector_opentsdb.sh
