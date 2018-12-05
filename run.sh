@@ -111,4 +111,6 @@ done
 echo ""
 echo "Starting TSD..."
 $OTSDB_HOME/bin/tsdb tsd &
+sleep 30
+echo "Starting TSD self-monitoring..."
 /tmp/tcollector_opentsdb.sh
