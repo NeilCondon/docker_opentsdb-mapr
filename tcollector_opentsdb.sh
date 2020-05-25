@@ -16,11 +16,18 @@
 
 TSD_HOST=localhost
 TSD_PORT=4242
-COLLECTION_INTERVAL=15
+COLLECTION_INTERVAL=10
 
-nc -z $TSD_HOST $TSD_PORT >/dev/null || exit 13
+#nc -z $TSD_HOST $TSD_PORT >/dev/null || exit 13
+
+#while :; do
+#  echo stats || exit
+#  sleep $COLLECTION_INTERVAL
+#done | nc $TSD_HOST $TSD_PORT
 
 while :; do
   echo stats || exit
   sleep $COLLECTION_INTERVAL
-done | nc $TSD_HOST $TSD_PORT
+done | nc -w 30  $TSD_HOST $TSD_PORT \
+    | sed 's/^/put /' \
+    | nc -w 30 $TSD_HOST $TSD_PORT
