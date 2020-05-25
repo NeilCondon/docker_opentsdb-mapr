@@ -1,0 +1,3 @@
+[submodule "opentsdb-tsuid-ratelimiter"]
+	path = opentsdb-tsuid-ratelimiter
+	url = https://github.com/G-Research/opentsdb-tsuid-ratelimiter.git

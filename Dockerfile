@@ -1,8 +1,22 @@
+# Stage 1: build the opentsdb.tsuid.ratelimiter plugin .jar, using a generic jdk base image
+FROM openjdk:8-jdk-alpine3.7 AS builder
+
+#ARG http_proxy=http://interneta:8080
+#ARG https_proxy=http://interneta:8080
+
+RUN java -version
+COPY ./opentsdb-tsuid-ratelimiter /usr/src/opentsdb-tsuid-ratelimiter
+WORKDIR /usr/src/opentsdb-tsuid-ratelimiter
+RUN apk --no-cache --allow-untrusted add maven && mvn --version
+RUN mvn package
+#RUN mvn package -Dhttp.proxyHost=interneta -Dhttp.proxyPort=8080 -Dhttps.proxyHost=interneta -Dhttps.proxyPort=8080
+
+
 # Use the custom MapR PACC from neilcedwards - it needs to be custom because we need Hbase client included.
 FROM neilcedwards/pacc-custom:601_500_yarn_fuse_hbase_streams
 
-ARG http_proxy=http://interneta:8080
-ARG https_proxy=https://interneta:8080
+#ARG http_proxy=http://interneta:8080
+#ARG https_proxy=https://interneta:8080
 
 # These environment variables are associated with the OpenTSDB configuration, and can be overridden at run time
 ENV MAPR_HOME=/opt/mapr \
@@ -56,6 +70,14 @@ RUN sudo chown 1000:100 /tmp/opentsdb.conf; \
 ADD ./tcollector_opentsdb.sh /tmp/tcollector_opentsdb.sh
 RUN sudo chown 1000:100 /tmp/tcollector_opentsdb.sh; \
     sudo chmod a+rx /tmp/tcollector_opentsdb.sh
+
+# Copy the opentsdb.tsuid.ratelimiter plugin jar from our Step 1 build
+COPY --from=builder /usr/src/opentsdb-tsuid-ratelimiter/target/tsuid-ratelimiter-plugin-1.1-SNAPSHOT.jar /tmp
+RUN OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversion)"; \
+    sudo mv /tmp//tsuid-ratelimiter-plugin-1.1-SNAPSHOT.jar ${OTSDB_HOME}/share/opentsdb/plugins
+
+ENV LD_LIBRARY_PATH=${MAPR_HOME}/lib
+RUN echo LD_LIBRARY_PATH = $LD_LIBRARY_PATH
 
 EXPOSE 4242/tcp
 

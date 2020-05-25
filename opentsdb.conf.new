@@ -47,11 +47,13 @@ tsd.core.enable_ui = true
 
 # Whether or not the meta data caching plugin is enabled.
 # Optional, Boolean, Default: false
-tsd.core.meta.cache.enable = false
+tsd.core.meta.cache.enable = true
 
 # The class name of a plugin implementing the meta cache interface.
 # Optional, String
-# tsd.core.meta.cache.plugin = ""
+tsd.core.meta.cache.plugin = uk.co.gresearch.opentsdb.RateLimitedTsuidTracking
+tsd.meta.cache.max_size = 10000
+tsd.meta.cache.ttl_secnds = 60
 
 # Whether or not to enable real-time UIDMeta object creation.
 # Optional, Boolean, Default: false
@@ -59,11 +61,11 @@ tsd.core.meta.enable_realtime_uid = true
 
 # Whether or not to enable real-time TSMeta object creation.
 # Optional, Boolean, Default: false
-tsd.core.meta.enable_realtime_ts = false
+tsd.core.meta.enable_realtime_ts = true
 
 # Whether or not to enable tracking of TSUIDs by storing a 1 with the current timestamp every time a data point is recorded.
 # Optional, Boolean, Default: false
-tsd.core.meta.enable_tsuid_tracking = false
+tsd.core.meta.enable_tsuid_tracking = true
 
 # Whether or not to enable tracking of TSUIDs by incrementing a counter every time a data point is recorded.
 #   (Overrides "tsd.core.meta.enable_tsuid_tracking")
@@ -74,11 +76,11 @@ tsd.core.meta.enable_tsuid_incrementing = false
 #  - If the path is invalid, the TSD will fail to start.
 #  - Plugins can still be enabled if they are in the class path.
 # Optional, String
-#tsd.core.plugin_path
+tsd.core.plugin_path = /opt/mapr/opentsdb/opentsdb-2.4.0/share/opentsdb/plugins
 
 # Enables pre-population of the UID caches when starting a TSD.
 # Optional, Boolean, Default: false
-tsd.core.preload_uid_cache = false
+tsd.core.preload_uid_cache = true
 
 # The number of rows to scan for UID pre-loading.
 # Optional, Integer, Default: 300,000
@@ -414,7 +416,7 @@ tsd.storage.enable_compaction = true
 # Whether or not to accept the last written value when parsing data points with duplicate timestamps.
 #  - When enabled in conjunction with compactions, a compacted column will be written with the latest data points.
 # Optional, Boolean, Default: false
-tsd.storage.fix_duplicates = false
+tsd.storage.fix_duplicates = true
 
 # How often, in milliseconds, to flush the data point storage write buffer.
 # Optional, Integer, Default: 1000
