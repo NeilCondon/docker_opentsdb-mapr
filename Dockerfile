@@ -79,7 +79,7 @@ RUN OTSDB_HOME="/opt/mapr/opentsdb/opentsdb-$(</opt/mapr/opentsdb/opentsdbversio
 ENV LD_LIBRARY_PATH=${MAPR_HOME}/lib
 RUN echo LD_LIBRARY_PATH = $LD_LIBRARY_PATH
 
-HEALTHCHECK --interval=5s --timeout=3s CMD curl --fail http://localhost:4242/api/version || exit 1
+HEALTHCHECK --interval=5s --timeout=3s --start-period=240s CMD curl --fail http://localhost:4242/api/version || exit 1
 
 EXPOSE 4242/tcp
 
